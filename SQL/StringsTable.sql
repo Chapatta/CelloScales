@@ -1,0 +1,21 @@
+USE [Scales]
+GO
+
+/****** Object:  Table [dbo].[Strings]    Script Date: 07/05/2023 09:23:29 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Strings](
+	[StringName] [char](1) NOT NULL,
+	[StringIndex] [tinyint] NOT NULL,
+ CONSTRAINT [PK_Strings] PRIMARY KEY CLUSTERED 
+(
+	[StringName] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+

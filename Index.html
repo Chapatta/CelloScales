@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Violin Scales</title>
+    <link rel="stylesheet" href=".\CSS\styles.css">
+    <link rel="stylesheet" href=".\CSS\tabs.css">
+    <link rel="stylesheet" href=".\CSS\popup.css">
+    <link rel="stylesheet" href=".\CSS\tooltips.css">
+</head>
+<body>
+<h1>Violin Scales</h1>
+<table>
+    <tr>
+        <td>
+            <table id="Key">
+                <tr>
+                    <td>Key:</td><td class="VertSpacer"></td><td><select id="Key-dropdown"></select></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td><td></td><td></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td><td></td><td></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td><td></td><td></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td><td></td><td></td>
+                </tr>                                    
+            </table>
+        </td>
+        <td class="VertSpacer">
+        <td>
+            <table>
+                <tr>
+                    <td>Scale Type:</td><td class="VertSpacer"></td><td><select id="ScaleType-dropdown"></select></td>
+                </tr>
+                <tr>
+                    <td>Scales:</td><td></td><td><select id="Scales-dropdown"></select></td>
+                </tr>
+                <tr>
+                    <td>Scale Name:</td><td></td><td><label id="ScaleName-label"></label></td>
+                </tr>
+                <tr>
+                    <td>Key Signature:</td><td></td><td><label id="KeySignature-label"></label></td>
+                </tr>
+                <tr>
+                    <td>Notes:</td><td></td><td><label id="Notes-label"></label></td>
+                </tr>                                    
+            </table>
+        </td>
+    </tr>
+</table>
+
+<table>
+    <tr>
+        <td>Lock Violin<input type="checkbox" id="LockViolin"></td>
+        <td><button id="Export-button">Export</button></td>
+        <td><button id="CopyAsc-button">Copy Ascending</button></td>
+    </tr>
+</table>
+
+<br>
+
+<!-- Tab links -->
+<div class="tab">
+    <button class="tablinks" id="Violin-Tab">Violin</button>
+    <button class="tablinks" id="Export-Tab">Export</button>
+    <!-- <button class="tablinks" onclick="openCity(event, 'Tokyo')">Tokyo</button> -->
+</div>
+
+<!-- Tab content -->
+<div id="Violin-Div" class="tabcontent">
+    <div class="tooltip-container">
+        <p id="tooltip-text">The tooltip text.</p>
+        <!-- <button id="tooltip-button">A paragraph/button with a hover effect.</button> -->
+      </div>
+    <table id="Violin">
+        <tr id="Violin-Asc"><td>Asc</td></tr>
+
+        <tr class="position"><td rowspan="3">E</td></tr><tr class="finger"></tr><tr class="note"></tr>
+        <tr class="position"><td rowspan="3">A</td></tr><tr class="finger"></tr><tr class="note"></tr>
+        <tr class="position"><td rowspan="3">D</td></tr><tr class="finger"></tr><tr class="note"></tr>
+        <tr class="position"><td rowspan="3">G</td></tr><tr class="finger"></tr><tr class="note"></tr>
+
+        <tr id="ViolinSpacer"></tr>
+
+        <tr id="Violin-Desc"><td>Desc</td></tr>
+
+        <tr class="position"><td rowspan="3">E</td></tr><tr class="finger"></tr><tr class="note"></tr>
+        <tr class="position"><td rowspan="3">A</td></tr><tr class="finger"></tr><tr class="note"></tr>
+        <tr class="position"><td rowspan="3">D</td></tr><tr class="finger"></tr><tr class="note"></tr>
+        <tr class="position"><td rowspan="3">G</td></tr><tr class="finger"></tr><tr class="note"></tr>
+
+    </table>
+</div>
+
+<div id="editSafety" >
+    <input type="text" class="cellEdit" id="EditFinger"></td>
+    <input type="text" class="cellEdit" id="EditPosition"></td>
+</div>
+
+<div id="Export-Div" class="tabcontent">
+    <textarea id="Export-table"></textarea>
+</div>
+
+<div id="FingerPosition-modal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <table id="NoteEditor">
+        <tr>
+            <td>String</td><td id="EditString"></td>
+        </tr>
+        <tr>
+            <td>Fret</td><td id="EditFret"></td>
+        </tr>
+        <tr>
+            <td>Note</td><td id="EditNote"></td>
+        </tr>
+      </table>
+      <table>
+        <tr>
+            <td><button id="FPAdd-button">Add</button></td>
+            <td><button id="FPUpdate-button">Update</button></td>
+            <td><button id="FPDelete-button">Delete</button></td>
+        </tr>
+      </table>
+    </div>
+  
+  </div>
+<script type = "module" src = "./JavaScript/ViolinScales.js"></script>
+</body>
+
+</html>
