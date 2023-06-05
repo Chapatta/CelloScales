@@ -1,7 +1,7 @@
 import * as DAL from './DataAccessLayer.js'
 import * as UT from './Util.js'
 import * as DFP from './DragFingerPosition.js'
-import * as VS from './ViolinScales.js'
+import * as VS from './CelloScales.js'
 
 export function ShowFingerBlocks(scale)
 {
@@ -9,41 +9,41 @@ export function ShowFingerBlocks(scale)
     let fingerPosition;
     const fingerPositions = DAL.GetFingerPositions(scale.Scale,scale.Octaves);
 
-    let currentViolinPos = {string: "", position : ""}
-    const violin  = document.getElementById("Violin");
+    let currentCelloPos = {string: "", position : ""}
+    const Cello  = document.getElementById("Cello");
 
     const startingNote = scale.StartingNote
     for (var i = 0; i < fingerPositions.length; i++) 
     {
         fingerPosition = fingerPositions[i];
-        ViolinAddNote(violin,fingerPosition,currentViolinPos)
+        CelloAddNote(Cello,fingerPosition,currentCelloPos)
     }
 }
 
-function ViolinAddNote(violin,fingerPosition,currentViolinPos)
+function CelloAddNote(Cello,fingerPosition,currentCelloPos)
 {
-    let violinCoords,cell;
-    violinCoords = GetViolinCoords(fingerPosition);
+    let CelloCoords,cell;
+    CelloCoords = GetCelloCoords(fingerPosition);
 
-    cell = violin.rows[violinCoords.row].cells;
-    cell[violinCoords.col].innerHTML = fingerPosition.Note;
-    SetupNoteCell(cell[violinCoords.col],true);
+    cell = Cello.rows[CelloCoords.row].cells;
+    cell[CelloCoords.col].innerHTML = fingerPosition.Note;
+    SetupNoteCell(cell[CelloCoords.col],true);
 
-    cell = violin.rows[violinCoords.row].cells;
-    cell[violinCoords.col + 1].innerHTML = fingerPosition.Finger;
+    cell = Cello.rows[CelloCoords.row].cells;
+    cell[CelloCoords.col + 1].innerHTML = fingerPosition.Finger;
 
-    //Process the ViolinPosition only set if changed
-    if (currentViolinPos.string != fingerPosition.String || currentViolinPos.position != fingerPosition.ViolinPosition)
+    //Process the CelloPosition only set if changed
+    if (currentCelloPos.string != fingerPosition.String || currentCelloPos.position != fingerPosition.CelloPosition)
     {
-        cell = violin.rows[violinCoords.row].cells;
-        cell[violinCoords.col + 2].innerHTML = fingerPosition.ViolinPosition;
+        cell = Cello.rows[CelloCoords.row].cells;
+        cell[CelloCoords.col + 2].innerHTML = fingerPosition.CelloPosition;
 
-        currentViolinPos.string = fingerPosition.String;
-        currentViolinPos.position = fingerPosition.ViolinPosition;
+        currentCelloPos.string = fingerPosition.String;
+        currentCelloPos.position = fingerPosition.CelloPosition;
     }
 }
 
-function GetViolinCoords(fingerPosition)
+function GetCelloCoords(fingerPosition)
 {
     let row,col,directionOffSet;
     if (fingerPosition.Direction == "Asc" )
@@ -61,10 +61,10 @@ function GetViolinCoords(fingerPosition)
     return {row: row, col: col};
 }
 
-function GetStringOffset(violinString)
+function GetStringOffset(CelloString)
 {
     let stringOffset;
-    switch(violinString) 
+    switch(CelloString) 
     {
         case "C":
             stringOffset = 0;
@@ -86,13 +86,13 @@ function GetStringOffset(violinString)
 
 function RefreshCello()
 {
-    const violin  = document.getElementById("Violin");
+    const Cello  = document.getElementById("Cello");
     const maxFret = DAL.GetMaxFret();
     let row;
 
     for (let r=0; r<=maxFret; r++) 
     {
-        row = violin.rows[r + UT.FretsRowStart];
+        row = Cello.rows[r + UT.FretsRowStart];
         row.innerHTML = UT.RowTemplate(r);
 
         for (var c = UT.ColAscStart; c < UT.ColAscEnd; c+=UT.NumNoteDetails) 
@@ -115,12 +115,12 @@ export function SetupNoteCell(cell,hasNote)
     SetNoteAttributes(cell);
 }
 
-function GetNoteFromScale(violinNotes)
+function GetNoteFromScale(CelloNotes)
 {
     let note,noteFound;
-    for (let n=0;n < violinNotes.length;n++)
+    for (let n=0;n < CelloNotes.length;n++)
     {
-        note = violinNotes[n].Note;
+        note = CelloNotes[n].Note;
         noteFound = VS.CurrentScaleNotes.find(item => {return item == note});
         if (noteFound !== undefined)
         {
@@ -132,12 +132,12 @@ function GetNoteFromScale(violinNotes)
 
 function SetNoteAttributes(cell)
 {
-    const violin = document.getElementById("Violin");   
-    const string = UT.GetStringFromNoteCell(violin,cell);
+    const Cello = document.getElementById("Cello");   
+    const string = UT.GetStringFromNoteCell(Cello,cell);
 
-    const violinNotes = DAL.GetViolinNotes(string,UT.GetFretFromCell(cell));
+    const CelloNotes = DAL.GetCelloNotes(string,UT.GetFretFromCell(cell));
 
-    const noteFromScale = GetNoteFromScale(violinNotes);   
+    const noteFromScale = GetNoteFromScale(CelloNotes);   
     if (noteFromScale !== undefined)
     {
         //This is a note from the scale
@@ -149,14 +149,14 @@ function SetNoteAttributes(cell)
         cell.setAttribute('scaleNote',"false");
 
         //This is a NOT note from the scale
-        if (violinNotes.length == 1)
+        if (CelloNotes.length == 1)
         {
-            cell.setAttribute('note',violinNotes[0].Note);
+            cell.setAttribute('note',CelloNotes[0].Note);
         }
         else
         {
             //display both enharmonic notes
-            cell.setAttribute('note', violinNotes[0].Note + "/" + violinNotes[1].Note);
+            cell.setAttribute('note', CelloNotes[0].Note + "/" + CelloNotes[1].Note);
         }
     }
 }
@@ -185,8 +185,8 @@ function OnCell_Mouseover(evt)
     //anonymous function not great with remove listener which needs a function name
     //cell.addEventListener('mouseover', () => {tooltip.style.display = 'block';}, false); 
     // change display to 'block' on mouseover
-    //const violin  = document.getElementById("Violin");   
-    //const noteCell = ES.GetCurrentCell(violin,evt.target.closest('td'));
+    //const Cello  = document.getElementById("Cello");   
+    //const noteCell = ES.GetCurrentCell(Cello,evt.target.closest('td'));
     const cell = evt.target.closest('td');
     const noteInScale = cell.getAttribute('scaleNote');
     const note = cell.getAttribute('note');
@@ -212,15 +212,15 @@ function OnCell_Mouseleave()
     document.getElementById("tooltip-text").style.display = 'none';
 }
 
-export function RefreshViolinDirection(colStart)
+export function RefreshCelloDirection(colStart)
 {
-    const violin  = document.getElementById("Violin");
+    const Cello  = document.getElementById("Cello");
     const maxFret = DAL.GetMaxFret();
     let row;
 
     for (let r=0; r<=maxFret; r++) 
     {
-        row = violin.rows[r + UT.FretsRowStart];
+        row = Cello.rows[r + UT.FretsRowStart];
         for (var c = colStart; c < colStart + UT.NumStrings * UT.NumNoteDetails; c+=UT.NumNoteDetails) 
         {
             row.cells[c].innerHTML = UT.Empty;

@@ -37,7 +37,7 @@ SELECT 60 + [ID]
 
 select distinct [note] note 
 into #tmp
-from [dbo].[ViolinNotes]
+from [dbo].[CelloNotes]
 where Note not like '%#%'
 
 insert into [Scales]

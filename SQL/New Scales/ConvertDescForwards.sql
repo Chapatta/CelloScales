@@ -1,4 +1,4 @@
---convert desc to read forwards to aid violin position
+--convert desc to read forwards to aid Cello position
 
 /*
 select *
@@ -52,7 +52,7 @@ and m.FingerBlock = fb.FingerBlock
 where direction = 'Desc'
 
 SELECT 
-Scale,	Octaves,	FingerBlock,	NotePosition,	String,	Fret,	Direction,	Note,	Finger,	ViolinPosition
+Scale,	Octaves,	FingerBlock,	NotePosition,	String,	Fret,	Direction,	Note,	Finger,	CelloPosition
 FROM [Scales].[dbo].[FingerBlocks]
 where direction = 'Desc'
 and Scale = 2
@@ -60,7 +60,7 @@ and Octaves = 3
 
 --Phase 2 notePositions
 SELECT 
-Scale,	Octaves,	FingerBlock,	NotePosition,	String,	Fret,	Direction,	Note,	Finger,	ViolinPosition
+Scale,	Octaves,	FingerBlock,	NotePosition,	String,	Fret,	Direction,	Note,	Finger,	CelloPosition
 FROM [Scales].[dbo].[FingerBlocks]
 where Scale = 2
 and Octaves = 3
@@ -71,7 +71,7 @@ order by Scale,	Octaves,direction,	FingerBlock,	NotePosition
 SELECT 
 Scale,	Octaves,Direction,	FingerBlock,	NotePosition,
 row_number() over (partition by Scale,	Octaves,fingerblock order by scale asc,octaves asc,fingerblock asc ,fret asc) as MappedNotePosition
---,String,	Fret,	Direction,	Note,	Finger,	ViolinPosition
+--,String,	Fret,	Direction,	Note,	Finger,	CelloPosition
 into #tmpMappedNotePosition
 FROM [Scales].[dbo].[FingerBlocks]
 --where Scale = 2
@@ -90,7 +90,7 @@ and m.direction = fb.direction
 and m.NotePosition = fb.NotePosition
 
 SELECT 
-Scale,	Octaves,	FingerBlock,	NotePosition,	String,	Fret,	Direction,	Note,	Finger,	ViolinPosition
+Scale,	Octaves,	FingerBlock,	NotePosition,	String,	Fret,	Direction,	Note,	Finger,	CelloPosition
 FROM [Scales].[dbo].[FingerBlocks]
 order by Scale,	Octaves,	FingerBlock,	NotePosition
 
@@ -107,7 +107,7 @@ ALTER TABLE [dbo].[FingerBlocks] ADD  CONSTRAINT [PK_FingerBlocks] PRIMARY KEY C
 */
 --44, 2, 1, D, 1
 SELECT 
-Scale,	Octaves,	FingerBlock,	NotePosition,	String,	Fret,	Direction,	Note,	Finger,	ViolinPosition
+Scale,	Octaves,	FingerBlock,	NotePosition,	String,	Fret,	Direction,	Note,	Finger,	CelloPosition
 FROM [Scales].[dbo].[FingerBlocks]
 where Scale = 44
 and Octaves = 2
@@ -128,7 +128,7 @@ and fb.Octaves = 2
 --insert into #tmpFingerPos
 SELECT 
 row_number() over (partition by fingerblock,noteposition order by scale asc,octaves asc,fingerblock desc ,noteposition desc) + @maxAsc as RowNum,
-Scale,	Octaves,	FingerBlock,	NotePosition,	String,	Fret,	Direction,	Note,	Finger,	ViolinPosition
+Scale,	Octaves,	FingerBlock,	NotePosition,	String,	Fret,	Direction,	Note,	Finger,	CelloPosition
 FROM [Scales].[dbo].[FingerBlocks]
 where direction = 'Desc'
 and Scale = 2

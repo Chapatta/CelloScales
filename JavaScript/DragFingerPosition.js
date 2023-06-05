@@ -1,6 +1,6 @@
 import * as UT from './Util.js'
 import * as ES from './EditScale.js'
-import * as DV from './DisplayViolin.js'
+import * as DV from './DisplayCello.js'
 
 export function SetDraggable(cell,toggle)
 {
@@ -18,11 +18,11 @@ export function SetDraggable(cell,toggle)
 
 function dragStart(evt) 
 {
-    const violin  = document.getElementById("Violin");
-    ES.CommitChanges(violin);
+    const Cello  = document.getElementById("Cello");
+    ES.CommitChanges(Cello);
 
     const cell = evt.target.closest('td');
-    const noteCell = ES.GetCurrentCell(violin,cell);
+    const noteCell = ES.GetCurrentCell(Cello,cell);
     ES.SetFingerPositionCell(noteCell);
 
     //evt.dataTransfer.setData('FingerPositionCell', ES.FingerPositionCell);
@@ -44,17 +44,17 @@ function dragStart(evt)
 
 export function SetupDraggingRows()
 {
-    const violin  = document.getElementById("Violin");
+    const Cello  = document.getElementById("Cello");
     let row;
     for (let rowIndex = UT.RowAscStart;rowIndex <= UT.RowAscEnd; rowIndex += UT.NumNoteDetails)
     {
-        row = violin.rows[rowIndex+2];
+        row = Cello.rows[rowIndex+2];
         SetupDraggingRow(row);
     }
 
     for (let rowIndex = UT.RowDescStart;rowIndex <= UT.RowDescEnd; rowIndex += UT.NumNoteDetails)
     {
-        row = violin.rows[rowIndex+2];
+        row = Cello.rows[rowIndex+2];
         SetupDraggingRow(row);        
     }
 }
@@ -89,11 +89,11 @@ function dragDrop(evt) {
 
     ES.FingerPositionDelete();
 
-    const violin  = document.getElementById("Violin");
-    const noteCell = ES.GetCurrentCell(violin,evt.target.closest('td'));
+    const Cello  = document.getElementById("Cello");
+    const noteCell = ES.GetCurrentCell(Cello,evt.target.closest('td'));
     ES.SetFingerPositionCell(noteCell);
     ES.FingerPositionCell.Finger = evt.dataTransfer.getData('Finger');
     ES.FingerPositionCell.Position = evt.dataTransfer.getData('Position');
 
-    ES.EditCell(violin,noteCell);     
+    ES.EditCell(Cello,noteCell);     
 }

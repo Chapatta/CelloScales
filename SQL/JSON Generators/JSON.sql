@@ -38,7 +38,7 @@ order by ID
 GO
 
 SELECT (
-    SELECT [Scale],[Octaves],[FingerBlock],[String],[Fret],[Direction],[Note],[NotePosition],[Finger],[ViolinPosition]
+    SELECT [Scale],[Octaves],[FingerBlock],[String],[Fret],[Direction],[Note],[NotePosition],[Finger],[CelloPosition]
     FOR JSON PATH, 
         INCLUDE_NULL_VALUES, 
         WITHOUT_ARRAY_WRAPPER
@@ -56,7 +56,7 @@ EXEC sp_configure 'xp_cmdshell', '1'
 RECONFIGURE
 
 /* Export data formatted with line delimitation to a JSON file */
-EXEC master..xp_cmdshell 'DIR "C:\Users\Sam\Documents\Sam\Musicianship\ScalesPractical\ScalesPracticalWebApp\ViolinScales\JSON'
+EXEC master..xp_cmdshell 'DIR "C:\Users\Sam\Documents\Sam\Musicianship\ScalesPractical\ScalesPracticalWebApp\CelloScales\JSON'
 --run ssms as administrator didn't work
 --Access is denied.
 
@@ -64,7 +64,7 @@ DECLARE @sql varchar(1000)
 SET @sql = 'bcp "SELECT (SELECT ID, [Name] ' +
     'FOR JSON PATH, INCLUDE_NULL_VALUES, WITHOUT_ARRAY_WRAPPER) ' +
     'FROM [ScaleTypes]" ' +
-    'queryout  "C:\Users\Sam\Documents\Sam\Musicianship\ScalesPractical\ScalesPracticalWebApp\ViolinScales\JSON\ScaleTypes.json" ' + 
+    'queryout  "C:\Users\Sam\Documents\Sam\Musicianship\ScalesPractical\ScalesPracticalWebApp\CelloScales\JSON\ScaleTypes.json" ' + 
     '-c -S localhost -d Scales -T' --'-c -S MACWIN2 -d WideWorldImporters -T'
 EXEC sys.XP_CMDSHELL @sql
 GO

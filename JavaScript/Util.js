@@ -1,10 +1,10 @@
 import * as DAL from './DataAccessLayer.js'
-import * as VS from './ViolinScales.js'
+import * as VS from './CelloScales.js'
 
 export const NumNoteDetails = 3;
 export const NumStrings = 4;
 
-//Violin
+//Cello
 export const RowAscStart = 1;
 export const RowAscEnd = RowAscStart + NumStrings * NumNoteDetails - 1; //12
 
@@ -75,12 +75,12 @@ export function EmptyCellNumber(cellValue)
    return false;
 }
 
-export function CellIndexPosition(violin,rowIndex,cellIndex)
+export function CellIndexPosition(Cello,rowIndex,cellIndex)
 {
-    //This takes the cell index and pushes it back one if it is a Violine position row
+    //This takes the cell index and pushes it back one if it is a Celloe position row
     //This is because this is because the other two rows not and finger don't count as they are merged 
     //into the position row
-    if (PositionRow(violin,rowIndex))
+    if (PositionRow(Cello,rowIndex))
     {
         cellIndex = cellIndex + 1;
     }
@@ -88,21 +88,21 @@ export function CellIndexPosition(violin,rowIndex,cellIndex)
     return cellIndex;
 }
 
-export function RowStartCell(violin,r)
+export function RowStartCell(Cello,r)
 {
     let startCell = 0;
-    if (PositionRow(violin,r)){startCell = 1;}
+    if (PositionRow(Cello,r)){startCell = 1;}
     return startCell;
 }
 
-function PositionRow(violin,rowIndex)
+function PositionRow(Cello,rowIndex)
 {
-    return violin.rows[rowIndex].className == "position";
+    return Cello.rows[rowIndex].className == "position";
 }
 
-export function NoteRow(violin,rowIndex)
+export function NoteRow(Cello,rowIndex)
 {
-    return violin.rows[rowIndex].className == "note";
+    return Cello.rows[rowIndex].className == "note";
 }
 
 export function GetNoteCol(colIndex)
@@ -139,7 +139,7 @@ export function RowTemplate(rowIndex)
         rowTemplate = rowTemplate + string;
     }
 
-    rowTemplate = rowTemplate + '<td class="ViolinSpacer"></td>'
+    rowTemplate = rowTemplate + '<td class="CelloSpacer"></td>'
 
     //Descending
     for (let i=1;i <= NumStrings;i++)
@@ -161,7 +161,7 @@ function CellDirection(cellIndex)
     }
 }
 
-export function GetStringFromNoteCell(violin,cell)
+export function GetStringFromNoteCell(Cello,cell)
 {
     let stringCellIndex, colOffset,stringColOffset;
     if (CellDirection(cell.cellIndex) == "Asc")
@@ -176,7 +176,7 @@ export function GetStringFromNoteCell(violin,cell)
     }
 
     stringCellIndex = stringColOffset + ((cell.cellIndex - colOffset) / NumNoteDetails) 
-    return violin.rows[StringRow].cells[stringCellIndex].innerHTML;
+    return Cello.rows[StringRow].cells[stringCellIndex].innerHTML;
 }
 
 export function GetFretFromCell(cell)

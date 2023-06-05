@@ -9,7 +9,7 @@ E	[Direction] [varchar](4) NULL,
 H	[Note] [varchar](2) NOT NULL,
 L	[NotePosition] [tinyint] NULL,
 M	[Finger] [tinyint] NULL,
-N	[ViolinPosition] [varchar](20) NULL, 
+N	[CelloPosition] [varchar](20) NULL, 
 */
 
 

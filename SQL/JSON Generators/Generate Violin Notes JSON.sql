@@ -12,7 +12,7 @@ SELECT (
         WITHOUT_ARRAY_WRAPPER
     ) line
 into #tmp
-from [ViolinNotes]
+from [CelloNotes]
 order by [String],[Fret],[Note]
 
 update #tmp

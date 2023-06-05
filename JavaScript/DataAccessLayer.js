@@ -3,7 +3,7 @@ import scalesJSON from '../JSON/Scales.json' assert { type: "json" };
 import fingerPositionJSON from '../JSON/FingerPositions.json' assert { type: "json" };
 import keySignaturesJSON from '../JSON/KeySignatures.json' assert { type: "json" };
 import keyScalesJSON from '../JSON/KeyScales.json' assert { type: "json" };
-import violinNoteJSON from '../JSON/ViolinNotes.json' assert { type: "json" };
+import CelloNoteJSON from '../JSON/CelloNotes.json' assert { type: "json" };
 import noteFretsJSON from '../JSON/NoteFrets.json' assert { type: "json" };
 
 export function GetScaleTypes()
@@ -42,9 +42,9 @@ export function GetFingerPositions(scaleID,octaves)
     return fingerPositionJSON.filter(item => {return item.Scale == scaleID && item.Octaves == octaves})
 }
 
-export function GetViolinNotes(string,fret)
+export function GetCelloNotes(string,fret)
 {
-    return violinNoteJSON.filter(item => {return item.String == string && item.Fret == fret})
+    return CelloNoteJSON.filter(item => {return item.String == string && item.Fret == fret})
 }
 
 export function GetNoteFrets()

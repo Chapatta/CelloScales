@@ -23,7 +23,7 @@ select * from [dbo].[ScaleTypes]
 CREATE VIEW [dbo].[vwFirstOctaveNotes]
 AS
 	select [Note],min(fret) as fret 
-	from [dbo].[ViolinNotes]
+	from [dbo].[CelloNotes]
 	where string = 'G'
 	group by [Note]
 

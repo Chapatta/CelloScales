@@ -1,13 +1,13 @@
-import * as VS from './ViolinScales.js'
-import * as DV from './DisplayViolin.js'
+import * as VS from './CelloScales.js'
+import * as DV from './DisplayCello.js'
 import * as UT from './Util.js'
 import * as DAL from './DataAccessLayer.js'
 import * as ES from './EditScale.js'
 
 export function Export()
 {
-    const violin = document.getElementById("Violin");
-    ES.CommitChanges(violin);
+    const Cello = document.getElementById("Cello");
+    ES.CommitChanges(Cello);
 
     const textArea = document.getElementById('Export-table');
     textArea.innerHTML = UT.Empty;
@@ -31,9 +31,9 @@ export function Export()
 
 export function CopyAscending()
 {
-    const violin = document.getElementById("Violin");
-    ES.CommitChanges(violin);
-    DV.RefreshViolinDirection(UT.ColDescStart)
+    const Cello = document.getElementById("Cello");
+    ES.CommitChanges(Cello);
+    DV.RefreshCelloDirection(UT.ColDescStart)
 
     let note
 
@@ -42,7 +42,7 @@ export function CopyAscending()
 
     for (let r=0; r<=maxFret; r++) 
     {
-        row = violin.rows[r + UT.FretsRowStart];
+        row = Cello.rows[r + UT.FretsRowStart];
         for (var c = UT.ColAscStart; c < UT.ColAscStart + UT.NumStrings * UT.NumNoteDetails; c+=UT.NumNoteDetails) 
         {
             note = row.cells[c].innerHTML;
@@ -52,11 +52,11 @@ export function CopyAscending()
                 // console.log("note : " + note);
                 ES.FingerPositionCell.StringCol = c + UT.ColDirOffset;
                 ES.FingerPositionCell.Fret = r;
-                ES.FingerPositionCell.String = UT.GetStringFromNoteCell(violin,row.cells[c]);
+                ES.FingerPositionCell.String = UT.GetStringFromNoteCell(Cello,row.cells[c]);
                 ES.FingerPositionCell.Note = note;
                 ES.FingerPositionCell.Finger = row.cells[c+1].innerHTML;
                 ES.FingerPositionCell.Position = row.cells[c+2].innerHTML;
-                ES.UpdateViolinCell(violin)
+                ES.UpdateCelloCell(Cello)
             }
         }
     }
@@ -64,13 +64,13 @@ export function CopyAscending()
 
 function ExportDirection(colStart,fingerBlock,direction)
 {
-    let cellNotes,cellFingers,cellViolinPositions,stringExport = "";
-    const violin = document.getElementById("Violin");
+    let cellNotes,cellFingers,cellCelloPositions,stringExport = "";
+    const Cello = document.getElementById("Cello");
     
     //Ascending
     // let scale,octaves,
-    let string,fret,note,notePosition = 1,finger,violinPosition
-    let lastFinger = -1,currentViolinPosition;
+    let string,fret,note,notePosition = 1,finger,CelloPosition
+    let lastFinger = -1,currentCelloPosition;
 
     const maxFret = DAL.GetMaxFret();
     let row;
@@ -79,10 +79,10 @@ function ExportDirection(colStart,fingerBlock,direction)
     {
         for (let r=0; r<=maxFret; r++) 
         {
-            row = violin.rows[r + UT.FretsRowStart];
+            row = Cello.rows[r + UT.FretsRowStart];
             if (r == 0)
             {
-                string = UT.GetStringFromNoteCell(violin,row.cells[c]);
+                string = UT.GetStringFromNoteCell(Cello,row.cells[c]);
             }
 
             note = row.cells[c].innerHTML;
@@ -90,7 +90,7 @@ function ExportDirection(colStart,fingerBlock,direction)
             if (!(UT.EmptyCell(note)))
             {
                 finger = row.cells[c+1].innerHTML;
-                violinPosition = row.cells[c+2].innerHTML;
+                CelloPosition = row.cells[c+2].innerHTML;
 
                 fret = r;
 
@@ -100,17 +100,17 @@ function ExportDirection(colStart,fingerBlock,direction)
                     notePosition = 1;
                 }
     
-                if (!(UT.EmptyCell(violinPosition)))
+                if (!(UT.EmptyCell(CelloPosition)))
                 {
-                    currentViolinPosition = violinPosition;
+                    currentCelloPosition = CelloPosition;
                 }
                 else
                 {
-                    violinPosition = currentViolinPosition;
+                    CelloPosition = currentCelloPosition;
                 }
 
                 stringExport = stringExport + "insert into FingerBlocks values (@S,@O," + fingerBlock + "," + SQLString(string) + "," + fret + "," + 
-                    SQLString(direction) + "," + SQLString(note)+ "," + notePosition+ "," + finger + "," + SQLString(violinPosition) + ")\r\n";
+                    SQLString(direction) + "," + SQLString(note)+ "," + notePosition+ "," + finger + "," + SQLString(CelloPosition) + ")\r\n";
 
                 notePosition = notePosition + 1;
                 lastFinger = finger;

@@ -65,7 +65,7 @@ INSERT INTO [dbo].[FingerBlocks]
            ,[Note]
            ,[NotePosition]
            ,[Finger]
-           ,[ViolinPosition])
+           ,[CelloPosition])
 select 5  --scale id not the new abrsm scale id created above
            ,[Octaves]
            ,[FingerBlock] + 200
@@ -75,7 +75,7 @@ select 5  --scale id not the new abrsm scale id created above
            ,[Note]
            ,[NotePosition]
            ,[Finger]
-           ,[ViolinPosition]
+           ,[CelloPosition]
 from fingerblocks
 where scale = 17
 and octaves = 2

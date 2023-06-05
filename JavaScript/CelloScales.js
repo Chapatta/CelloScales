@@ -1,11 +1,11 @@
 // Need to move back out of the JavaScript folder from where this is run
 import * as DAL from './DataAccessLayer.js'
-import * as DV from './DisplayViolin.js'
+import * as DV from './DisplayCello.js'
 import * as UT from './Util.js'
 import * as EXP from './Export.js'
 import * as ES from './EditScale.js'
 import * as DFP from './DragFingerPosition.js'
-// import {ShowFingerBlocks} from './DisplayViolin.js'
+// import {ShowFingerBlocks} from './DisplayCello.js'
 
 window.addEventListener("load", SetUpPage,false);
 export let CurrentScaleID = 0;
@@ -40,12 +40,12 @@ function SetUpPage()
     button = document.getElementById('Export-Tab');
     button.onclick = OnTab_Click;
 
-    button = document.getElementById('Violin-Tab');
+    button = document.getElementById('Cello-Tab');
     button.onclick = OnTab_Click;
     button.click();
 
-    const violin = document.getElementById('Violin');
-    violin.onclick = ES.OnViolinClicked;
+    const Cello = document.getElementById('Cello');
+    Cello.onclick = ES.OnCelloClicked;
 
     //DFP.SetupDraggingRows();
 
@@ -105,7 +105,7 @@ function OnScales_Change()
 {
     CurrentScaleID = document.getElementById('Scales-dropdown').value;
     ShowScale(CurrentScaleID);
-    Tab_Click('Violin-Tab');
+    Tab_Click('Cello-Tab');
 }
 
 function OnExport_Click()
@@ -140,17 +140,17 @@ function GetScaleTypeFromScaleName(scaleName)
 
 function AddFrets()
 {        
-    const violin  = document.getElementById("Violin");
+    const Cello  = document.getElementById("Cello");
     const maxFret = DAL.GetMaxFret();
     let row;
 
-    const template = violin.rows[2].innerHTML;
+    const template = Cello.rows[2].innerHTML;
 
     for (var r = 1; r <= maxFret; r++) 
     {
         row =  document.createElement("tr");
         row.innerHTML = template.replace("0",r);
-        violin.appendChild(row);
+        Cello.appendChild(row);
     }
 }
 
@@ -219,7 +219,7 @@ function ShowScale(scaleID)
     document.getElementById('KeySignature-label').innerText = currentScale.KeyNotes;
     document.getElementById('Notes-label').innerText = currentScale.Notes;
 
-    if (document.getElementById('LockViolin').checked)
+    if (document.getElementById('LockCello').checked)
     {
         return;
     }
@@ -308,8 +308,8 @@ function KeyCheck(event)
             break;
         case 27:
             //Escape
-            const violin = document.getElementById("Violin");
-            ES.CommitChanges(violin);
+            const Cello = document.getElementById("Cello");
+            ES.CommitChanges(Cello);
         default:
         break;
     }

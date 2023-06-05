@@ -4,14 +4,14 @@ on t.ID = s.ScaleType
 where startingnote = 'bb'
 and s.ScaleType = 3 --2	Major,2	Minor Harmonic,3	Minor Melodic
 
-select Scale,Octaves,FingerBlock,NotePosition,	String,	Fret,	Direction,	Note,		Finger,	ViolinPosition
+select Scale,Octaves,FingerBlock,NotePosition,	String,	Fret,	Direction,	Note,		Finger,	CelloPosition
 from fingerblocks
 where scale = 43 --6
 and [Direction] = 'asc'
 and octaves = 3
 order by fingerblock,noteposition
 
-select Scale,Octaves,FingerBlock,NotePosition,	String,	Fret,	Direction,	Note,		Finger,	ViolinPosition
+select Scale,Octaves,FingerBlock,NotePosition,	String,	Fret,	Direction,	Note,		Finger,	CelloPosition
 from fingerblocks
 where scale = 43 --6
 and [Direction] = 'desc'
@@ -32,7 +32,7 @@ and Fret = 0
 and Direction = 'asc'
 and Note = 'a' 
 and Finger = 0	
-and ViolinPosition = '1st'
+and CelloPosition = '1st'
 
 --
 select * from scales s

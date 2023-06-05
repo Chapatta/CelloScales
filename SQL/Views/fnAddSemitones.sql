@@ -33,7 +33,7 @@ BEGIN
 
 	select @AdjustedNote = vn.note 
 	from [vwFirstOctaveNotes] v
-	inner join [dbo].[ViolinNotes] vn
+	inner join [dbo].[CelloNotes] vn
 	on vn.Fret = v.fret + @NumSemiTones 
 	where v.[Note] = @Note
 	and  vn.string = 'G'

@@ -12,7 +12,7 @@ END
 GO
 
 SELECT (
-    SELECT Scale,	Octaves,	FingerBlock,	NotePosition,	String,	Fret,	Direction,	Note,	Finger,	ViolinPosition
+    SELECT Scale,	Octaves,	FingerBlock,	NotePosition,	String,	Fret,	Direction,	Note,	Finger,	CelloPosition
     FOR JSON PATH, 
         INCLUDE_NULL_VALUES, 
         WITHOUT_ARRAY_WRAPPER

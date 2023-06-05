@@ -10,7 +10,7 @@ h1 {
 p {
 color: red;
 }
-/* #Violin{
+/* #Cello{
 table-layout: fixed;
 width: 100%;
 } */
@@ -21,7 +21,7 @@ margin-left: auto;
 margin-right: auto;  
 }
 
-#Violin td {
+#Cello td {
     border-spacing: 0px;
     border-collapse: separate;
     border: 1px solid black;
@@ -42,7 +42,7 @@ margin-right: auto;
 }
 
 
-.ViolinSpacer {
+.CelloSpacer {
     border: 0px;
     height: 30px;
 }
