@@ -17,7 +17,7 @@ function SetUpPage()
 
     const dropdown = document.getElementById('Scales-dropdown');
     dropdown.onchange = OnScales_Change;
-    // dropdown.addEventListener('change', OnScales_Change);
+    dropdown.addEventListener('change', OnScales_Change);
 
     SetupKeysDropdown();
 
@@ -47,23 +47,7 @@ function SetUpPage()
     const violin = document.getElementById('Violin');
     violin.onclick = ES.OnViolinClicked;
 
-    //
-    var modal = document.getElementById("FingerPosition-modal");
-
-    window.onclick = function(event) {
-        if (event.target == modal) {
-          modal.style.display = "none";
-        }
-      }
-
-    var span = document.getElementsByClassName("close")[0];
-    span.onclick = function() {
-    modal.style.display = "none";
-    const violin = document.getElementById("Violin");
-    ES.HightlightFingerPosition(violin,ES.FingerPositionCell,false) ;    
-    }
-
-    DFP.SetupDraggingRows();
+    //DFP.SetupDraggingRows();
 
     document.addEventListener("keydown", KeyCheck);  //or however you are calling your method
 }
@@ -158,29 +142,15 @@ function AddFrets()
 {        
     const violin  = document.getElementById("Violin");
     const maxFret = DAL.GetMaxFret();
-    let cell,row,noteRow;
+    let row;
 
-    for (var r = 0; r <= UT.RowDescEnd; r++) 
-    {
-        row = violin.rows[r];
-        noteRow = UT.NoteRow(violin,r);
-        for (var c = 0; c <= maxFret; c++) 
-        {
-            cell = document.createElement("td");
-            row.appendChild(cell);
-            // if (noteRow)
-            // {
-            //     DV.SetupNoteCell(cell,false);
-            // }
-        }
-    }
+    const template = violin.rows[2].innerHTML;
 
-    const cellsAsc = document.getElementById("Violin-Asc").cells;
-    const cellsDesc = document.getElementById("Violin-Desc").cells;
-    for (var i = 0; i <= maxFret; i++) 
+    for (var r = 1; r <= maxFret; r++) 
     {
-        cellsAsc[i+1].innerHTML = i;
-        cellsDesc[i+1].innerHTML = i;
+        row =  document.createElement("tr");
+        row.innerHTML = template.replace("0",r);
+        violin.appendChild(row);
     }
 }
 

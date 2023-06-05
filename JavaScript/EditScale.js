@@ -4,7 +4,7 @@ import * as DV from './DisplayViolin.js'
 import * as ES from './EditScale.js'
 
 export let FingerPositionCell = {
-    StringRow: 0,
+    StringCol: 0,
     Fret: 0,
     String: "",
     Note: "",
@@ -34,9 +34,6 @@ export function OnViolinClicked(evt)
         }
     }
 
-    const violin = document.getElementById("Violin");
-    const noteCell = GetCurrentCell(violin,cell);
-    
     if (cell.getAttribute('scaleNote') == "false")
     {
         alert("Note not in scale");
@@ -44,7 +41,10 @@ export function OnViolinClicked(evt)
     }
 
     //Fill back in the old cells
+    const violin = document.getElementById("Violin"); 
     CommitChanges(violin);   
+
+    const noteCell = GetCurrentCell(violin,cell);
     SetFingerPositionCell(noteCell);
 
     EditCell(violin,noteCell);
@@ -53,37 +53,35 @@ export function OnViolinClicked(evt)
 export function EditCell(violin,noteCell)
 {
     violin.rows[noteCell.parentElement.rowIndex].cells[noteCell.cellIndex].innerHTML = FingerPositionCell.Note;
-    SetupEditors(violin,noteCell);
+    SetupEditors(noteCell);
 }
 
 export function SetFingerPositionCell(noteCell)
 {
     const violin = document.getElementById("Violin");
 
-    FingerPositionCell.StringRow = noteCell.parentElement.rowIndex;
-    FingerPositionCell.Fret = noteCell.cellIndex;
+    FingerPositionCell.StringCol = noteCell.cellIndex;
+    FingerPositionCell.Fret = UT.GetFretFromCell(noteCell);
 
-    const cellFingers = violin.rows[FingerPositionCell.StringRow-1].cells;
-    const cellViolinPositions = violin.rows[FingerPositionCell.StringRow-2].cells;
+    const noteRow = noteCell.parentElement;
 
-    FingerPositionCell.String = cellViolinPositions[0].innerHTML;
-
+    FingerPositionCell.String = UT.GetStringFromNoteCell(violin,noteCell);
     FingerPositionCell.Note = noteCell.getAttribute('note'); //cellNotes[FingerPositionCell.Fret].innerHTML;
    
     //SetupEditFingerPositionButtons(violin);
 
-    const note = violin.rows[FingerPositionCell.StringRow].cells[FingerPositionCell.Fret].innerHTML;
+    const note = violin.rows[FingerPositionCell.Fret + UT.FretsRowStart].cells[FingerPositionCell.StringCol].innerHTML;
 
     if (UT.EmptyCell(note))
     {
         //ie we are adding
-        PrefillAdd();
+        PrefillAdd(noteCell);
     }
     else
     {
         //otherwise editing just get whatever's there
-        FingerPositionCell.Finger = cellFingers[FingerPositionCell.Fret].innerHTML;
-        FingerPositionCell.Position = cellViolinPositions[FingerPositionCell.Fret+1].innerHTML;
+        FingerPositionCell.Finger = noteRow.cells[noteCell.cellIndex + 1].innerHTML;
+        FingerPositionCell.Position = noteRow.cells[noteCell.cellIndex + 2].innerHTML;
     }
 
     FingerPositionCell.Finger = UT.EmptyCellNumber(FingerPositionCell.Finger) ? "": FingerPositionCell.Finger;
@@ -95,36 +93,18 @@ export function GetCurrentCell(violin,cell)
     if (!cell) {return;} // Quit, not clicked on a cell
   
     const row = cell.parentElement;
-    return violin.rows[UT.GetNoteRow(row.rowIndex)].cells[UT.CellIndex(violin,row.rowIndex,cell.cellIndex)];
+    return violin.rows[row.rowIndex].cells[UT.GetNoteCol(cell.cellIndex)];
 }
 
-export function HightlightFingerPosition(violin,fingerPositionCell,highlight)
-{
-    if (highlight)
-    {
-        violin.rows[fingerPositionCell.StringRow].cells[fingerPositionCell.Fret].classList.add("highlight");
-        violin.rows[fingerPositionCell.StringRow-1].cells[fingerPositionCell.Fret].classList.add("highlight");
-        violin.rows[fingerPositionCell.StringRow-2].cells[parseInt(fingerPositionCell.Fret)+1].classList.add("highlight");
-    }
-    else
-    {
-        if (fingerPositionCell.StringRow == 0 && fingerPositionCell.Fret == 0)
-            return;
-        violin.rows[fingerPositionCell.StringRow].cells[fingerPositionCell.Fret].classList.remove("highlight");
-        violin.rows[fingerPositionCell.StringRow-1].cells[fingerPositionCell.Fret].classList.remove("highlight");
-        violin.rows[fingerPositionCell.StringRow-2].cells[parseInt(fingerPositionCell.Fret)+1].classList.remove("highlight");
-    }
-}
-
-function SetupEditors(violin,noteCell)
+function SetupEditors(noteCell)
 {
     const editFinger = document.getElementById("EditFinger");
     const editPosition = document.getElementById("EditPosition");
 
-    const noteCellRowIndex = noteCell.parentElement.rowIndex;
+    const cellRow = noteCell.parentElement;
 
-    const cellFinger = violin.rows[noteCellRowIndex-1].cells[noteCell.cellIndex];
-    const cellPosition = violin.rows[noteCellRowIndex-2].cells[parseInt(noteCell.cellIndex)+1];
+    const cellFinger = cellRow.cells[parseInt(noteCell.cellIndex) + 1];
+    const cellPosition = cellRow.cells[parseInt(noteCell.cellIndex) + 2];
 
     cellFinger.innerHTML = "";
     cellPosition.innerHTML = "";
@@ -139,7 +119,7 @@ function SetupEditors(violin,noteCell)
     editFinger.select();
 }
 
-function PrefillAdd()
+function PrefillAdd(noteCell)
 {
     let finger,position = "";
     if (FingerPositionCell.Fret == 0)
@@ -149,18 +129,19 @@ function PrefillAdd()
         return;
     }
 
-    let note, found = false;
+    let note, found = false,row;
     const violin = document.getElementById("Violin");
-    const row = violin.rows[FingerPositionCell.StringRow];
+    
     //find preceding 1 and add 1 OR if frist set to 1
-    for (let c = FingerPositionCell.Fret - 1; c >= 0 ; c--)
+    for (let r = FingerPositionCell.Fret - 1; r >= 0 ; r--)
     {
-        note = row.cells[c].innerHTML;
+        row = violin.rows[r + UT.FretsRowStart];
+        note = row.cells[noteCell.cellIndex].innerHTML;
         if (!UT.EmptyCell(note))
         {
             found = true;
-            finger = parseInt(violin.rows[FingerPositionCell.StringRow - 1].cells[c].innerHTML) + 1;
-            position = violin.rows[FingerPositionCell.StringRow - 2].cells[c+1].innerHTML;
+            finger = parseInt(row.cells[noteCell.cellIndex + 1].innerHTML) + 1;
+            position = row.cells[noteCell.cellIndex + 2].innerHTML;
             break;
         }
     }
@@ -187,7 +168,7 @@ function PrefillAdd()
 function ViolinPosition(fret)
 {
     let position;
-    if (fret < 5)
+    if (fret < 4)
         return "1st";
     if (fret < 8)
         return "3rd";
@@ -208,11 +189,12 @@ export function CommitChanges(violin)
 
 export function UpdateViolinCell(violin)
 {
-    violin.rows[FingerPositionCell.StringRow].cells[FingerPositionCell.Fret].innerHTML = FingerPositionCell.Note;
-    violin.rows[FingerPositionCell.StringRow-1].cells[FingerPositionCell.Fret].innerHTML = FingerPositionCell.Finger;
-    violin.rows[FingerPositionCell.StringRow-2].cells[parseInt(FingerPositionCell.Fret) + 1].innerHTML = FingerPositionCell.Position;
+    const row = violin.rows[FingerPositionCell.Fret + UT.FretsRowStart];
+    row.cells[FingerPositionCell.StringCol].innerHTML = FingerPositionCell.Note;
+    row.cells[parseInt(FingerPositionCell.StringCol) + 1].innerHTML = FingerPositionCell.Finger;
+    row.cells[parseInt(FingerPositionCell.StringCol) + 2].innerHTML = FingerPositionCell.Position;
 
-    DV.SetupNoteCell(violin.rows[FingerPositionCell.StringRow].cells[FingerPositionCell.Fret],true);
+    DV.SetupNoteCell(row.cells[FingerPositionCell.StringCol],true);
 }
 
 function MoveEditToSafety()
@@ -228,7 +210,6 @@ function MoveEditToSafety()
 
     editSafety.appendChild(editFinger);
     editSafety.appendChild(editPosition);
-
 }
 
 export function FingerPositionDelete()
@@ -239,18 +220,20 @@ export function FingerPositionDelete()
     }
     MoveEditToSafety();
     const violin = document.getElementById("Violin");
-    violin.rows[FingerPositionCell.StringRow].cells[FingerPositionCell.Fret].innerHTML = UT.Empty;
-    violin.rows[FingerPositionCell.StringRow-1].cells[FingerPositionCell.Fret].innerHTML = UT.Empty;
-    violin.rows[FingerPositionCell.StringRow-2].cells[parseInt(FingerPositionCell.Fret) + 1].innerHTML = UT.Empty;
+    const row = violin.rows[FingerPositionCell.Fret + UT.FretsRowStart];
 
-    DV.SetupNoteCell(violin.rows[FingerPositionCell.StringRow].cells[FingerPositionCell.Fret],false);
+    row.cells[FingerPositionCell.StringCol].innerHTML = UT.Empty;
+    row.cells[parseInt(FingerPositionCell.StringCol) + 1].innerHTML = UT.Empty;
+    row.cells[parseInt(FingerPositionCell.StringCol) + 2].innerHTML = UT.Empty;
+
+    DV.SetupNoteCell(row.cells[FingerPositionCell.StringCol],false);
 
     RefreshFingerPositionCell();
 }
 
 function RefreshFingerPositionCell()
 {
-    FingerPositionCell.StringRow = 0;
+    FingerPositionCell.StringCol = 0;
     FingerPositionCell.Fret = 0;
     FingerPositionCell.String = "";
     FingerPositionCell.Note = "";

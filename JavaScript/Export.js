@@ -59,7 +59,7 @@ export function CopyAscending()
             if (!(UT.EmptyCell(note)))
             {
                 // console.log("note : " + note);
-                ES.FingerPositionCell.StringRow = r + UT.RowDirOffset;
+                ES.FingerPositionCell.StringCol = r + UT.RowDirOffset;
                 ES.FingerPositionCell.Fret = c;
                 ES.FingerPositionCell.String = string;
                 ES.FingerPositionCell.Note = note;

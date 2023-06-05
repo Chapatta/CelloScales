@@ -42,7 +42,7 @@ margin-right: auto;
 }
 
 
-#ViolinSpacer td {
+.ViolinSpacer {
     border: 0px;
     height: 30px;
 }
@@ -55,11 +55,11 @@ margin-right: auto;
     color: rgb(0, 255, 85);
 } */
 
-.finger td{
+.finger{
     color: rgb(0, 60, 255);
 }
 
-.note td{
+.note{
     color: red;
 }
 

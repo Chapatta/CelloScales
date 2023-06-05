@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Violin Scales</title>
+    <title>Cello Scales</title>
     <link rel="stylesheet" href=".\CSS\styles.css">
     <link rel="stylesheet" href=".\CSS\tabs.css">
     <link rel="stylesheet" href=".\CSS\popup.css">
     <link rel="stylesheet" href=".\CSS\tooltips.css">
 </head>
 <body>
-<h1>Violin Scales</h1>
+<h1>Cello Scales</h1>
 <table>
     <tr>
         <td>
@@ -55,7 +55,7 @@
 
 <table>
     <tr>
-        <td>Lock Violin<input type="checkbox" id="LockViolin"></td>
+        <td>Lock Cello<input type="checkbox" id="LockViolin"></td>
         <td><button id="Export-button">Export</button></td>
         <td><button id="CopyAsc-button">Copy Ascending</button></td>
     </tr>
@@ -77,9 +77,10 @@
         <!-- <button id="tooltip-button">A paragraph/button with a hover effect.</button> -->
       </div>
     <table id="Violin">
-        <tr id="Violin-Asc"><td>Asc</td></tr>
+        <!-- <tr id="Violin-Asc"><td>Asc</td></tr>
 
         <tr class="position"><td rowspan="3">E</td></tr><tr class="finger"></tr><tr class="note"></tr>
+
         <tr class="position"><td rowspan="3">A</td></tr><tr class="finger"></tr><tr class="note"></tr>
         <tr class="position"><td rowspan="3">D</td></tr><tr class="finger"></tr><tr class="note"></tr>
         <tr class="position"><td rowspan="3">G</td></tr><tr class="finger"></tr><tr class="note"></tr>
@@ -91,8 +92,42 @@
         <tr class="position"><td rowspan="3">E</td></tr><tr class="finger"></tr><tr class="note"></tr>
         <tr class="position"><td rowspan="3">A</td></tr><tr class="finger"></tr><tr class="note"></tr>
         <tr class="position"><td rowspan="3">D</td></tr><tr class="finger"></tr><tr class="note"></tr>
-        <tr class="position"><td rowspan="3">G</td></tr><tr class="finger"></tr><tr class="note"></tr>
+        <tr class="position"><td rowspan="3">G</td></tr><tr class="finger"></tr><tr class="note"></tr> -->
 
+        <tr>
+            <td></td><td colspan="12">Ascending</td>
+            <td class="ViolinSpacer"></td>
+            <td colspan="12">Descending</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td colspan="3">C</td>
+            <td colspan="3">G</td>
+            <td colspan="3">D</td>
+            <td colspan="3">A</td>
+            
+            <td class="ViolinSpacer"></td>
+            
+            <td colspan="3">C</td>
+            <td colspan="3">G</td>
+            <td colspan="3">D</td>
+            <td colspan="3">A</td>
+        </tr>
+        <tr>
+            <td>0</td>
+            <!-- Ascending -->
+            <td class="note"></td><td class="finger"></td><td class="position"></td>
+            <td class="note"></td><td class="finger"></td><td class="position"></td>                
+            <td class="note"></td><td class="finger"></td><td class="position"></td>
+            <td class="note"></td><td class="finger"></td><td class="position"></td>
+            <!-- Spacer -->
+            <td class="ViolinSpacer"></td>
+                <!-- Descending -->
+            <td class="note"></td><td class="finger"></td><td class="position"></td>
+            <td class="note"></td><td class="finger"></td><td class="position"></td>                
+            <td class="note"></td><td class="finger"></td><td class="position"></td>
+            <td class="note"></td><td class="finger"></td><td class="position"></td>
+        </tr>
     </table>
 </div>
 

@@ -5,7 +5,7 @@ import * as VS from './ViolinScales.js'
 
 export function ShowFingerBlocks(scale)
 {
-    RefreshViolin();
+    RefreshCello();
     let fingerPosition;
     const fingerPositions = DAL.GetFingerPositions(scale.Scale,scale.Octaves);
 
@@ -13,16 +13,9 @@ export function ShowFingerBlocks(scale)
     const violin  = document.getElementById("Violin");
 
     const startingNote = scale.StartingNote
-    let octaveStartIndex;
     for (var i = 0; i < fingerPositions.length; i++) 
     {
         fingerPosition = fingerPositions[i];
-
-        if (fingerPosition.Note == startingNote )
-        {
-            octaveStartIndex = i;
-        }
-        
         ViolinAddNote(violin,fingerPosition,currentViolinPos)
     }
 }
@@ -36,14 +29,14 @@ function ViolinAddNote(violin,fingerPosition,currentViolinPos)
     cell[violinCoords.col].innerHTML = fingerPosition.Note;
     SetupNoteCell(cell[violinCoords.col],true);
 
-    cell = violin.rows[violinCoords.row - 1].cells;
-    cell[violinCoords.col].innerHTML = fingerPosition.Finger;
+    cell = violin.rows[violinCoords.row].cells;
+    cell[violinCoords.col + 1].innerHTML = fingerPosition.Finger;
 
     //Process the ViolinPosition only set if changed
     if (currentViolinPos.string != fingerPosition.String || currentViolinPos.position != fingerPosition.ViolinPosition)
     {
-        cell = violin.rows[violinCoords.row - 2].cells;
-        cell[violinCoords.col+1].innerHTML = fingerPosition.ViolinPosition;
+        cell = violin.rows[violinCoords.row].cells;
+        cell[violinCoords.col + 2].innerHTML = fingerPosition.ViolinPosition;
 
         currentViolinPos.string = fingerPosition.String;
         currentViolinPos.position = fingerPosition.ViolinPosition;
@@ -55,15 +48,15 @@ function GetViolinCoords(fingerPosition)
     let row,col,directionOffSet;
     if (fingerPosition.Direction == "Asc" )
     {
-        directionOffSet = 0;
+        directionOffSet = 1;
     }
     else
     {
         directionOffSet = UT.NumStrings * UT.NumNoteDetails + 2;
     }
 
-    row = directionOffSet + GetStringOffset(fingerPosition.String);
-    col = fingerPosition.Fret;
+    col = directionOffSet + GetStringOffset(fingerPosition.String);
+    row = fingerPosition.Fret + 2;
 
     return {row: row, col: col};
 }
@@ -73,17 +66,17 @@ function GetStringOffset(violinString)
     let stringOffset;
     switch(violinString) 
     {
-        case "E":
-            stringOffset = 3;
-            break;
-        case "A":
-            stringOffset = 6;
-            break;
-        case "D":
-            stringOffset = 9;
+        case "C":
+            stringOffset = 0;
             break;
         case "G":
-            stringOffset = 12;
+            stringOffset = 3;
+            break;
+        case "D":
+            stringOffset = 6;
+            break;
+        case "A":
+            stringOffset = 9;
             break;
         default:
         // code block
@@ -91,36 +84,32 @@ function GetStringOffset(violinString)
     return stringOffset;
 }
 
-function RefreshViolin()
+function RefreshCello()
 {
-    RefreshViolinDirection(UT.RowAscStart)
-    RefreshViolinDirection(UT.RowDescStart)
-}
-
-export function RefreshViolinDirection(rowStart)
-{
-    let cell,startCell;
     const violin  = document.getElementById("Violin");
-    let noteRow;
-    for (var r = rowStart; r <= rowStart + UT.NumStrings * UT.NumNoteDetails - 1; r++) 
+    const maxFret = DAL.GetMaxFret();
+    let row;
+
+    for (let r=0; r<=maxFret; r++) 
     {
-        cell = violin.rows[r].cells;
-        startCell = UT.RowStartCell(violin,r);
-        noteRow = UT.NoteRow(violin,r);
-        for (var c = startCell; c < cell.length; c++) 
+        row = violin.rows[r+2];
+        row.innerHTML = UT.RowTemplate(r);
+
+        for (var c = UT.ColAscStart; c < UT.ColAscEnd; c+=UT.NumNoteDetails) 
         {
-            cell[c].innerHTML = UT.Empty;
-            if (noteRow)
-            {
-                SetupNoteCell(cell[c],false);
-            }
+            SetupNoteCell(row.cells[c],false);
         }
-    } 
+
+        for (var c = UT.ColDescStart; c < UT.ColDescEnd; c+=UT.NumNoteDetails) 
+        {
+            SetupNoteCell(row.cells[c],false);
+        }
+    }
 }
 
 export function SetupNoteCell(cell,hasNote)
 {
-    DFP.SetDraggable(cell,hasNote);
+    //DFP.SetDraggable(cell,hasNote);
     SetupToolTip(cell,hasNote);
 
     SetNoteAttributes(cell);
@@ -143,10 +132,10 @@ function GetNoteFromScale(violinNotes)
 
 function SetNoteAttributes(cell)
 {
-    const violin  = document.getElementById("Violin");   
-    const string = violin.rows[parseInt(cell.parentElement.rowIndex)-2].cells[0].innerHTML;
+    const violin = document.getElementById("Violin");   
+    const string = UT.GetStringFromNoteCell(violin,cell);
 
-    const violinNotes = DAL.GetViolinNotes(string,cell.cellIndex);
+    const violinNotes = DAL.GetViolinNotes(string,UT.GetFretFromCell(cell));
 
     const noteFromScale = GetNoteFromScale(violinNotes);   
     if (noteFromScale !== undefined)
@@ -222,3 +211,4 @@ function OnCell_Mouseleave()
     // change display to 'none' on mouseleave
     document.getElementById("tooltip-text").style.display = 'none';
 }
+
