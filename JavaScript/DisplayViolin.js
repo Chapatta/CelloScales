@@ -92,7 +92,7 @@ function RefreshCello()
 
     for (let r=0; r<=maxFret; r++) 
     {
-        row = violin.rows[r+2];
+        row = violin.rows[r + UT.FretsRowStart];
         row.innerHTML = UT.RowTemplate(r);
 
         for (var c = UT.ColAscStart; c < UT.ColAscEnd; c+=UT.NumNoteDetails) 
@@ -212,3 +212,22 @@ function OnCell_Mouseleave()
     document.getElementById("tooltip-text").style.display = 'none';
 }
 
+export function RefreshViolinDirection(colStart)
+{
+    const violin  = document.getElementById("Violin");
+    const maxFret = DAL.GetMaxFret();
+    let row;
+
+    for (let r=0; r<=maxFret; r++) 
+    {
+        row = violin.rows[r + UT.FretsRowStart];
+        for (var c = colStart; c < colStart + UT.NumStrings * UT.NumNoteDetails; c+=UT.NumNoteDetails) 
+        {
+            row.cells[c].innerHTML = UT.Empty;
+            row.cells[c+1].innerHTML = UT.Empty;
+            row.cells[c+2].innerHTML = UT.Empty;
+
+            SetupNoteCell(row.cells[c],false);
+        }
+    }
+}

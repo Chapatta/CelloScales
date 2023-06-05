@@ -33,42 +33,33 @@ export function CopyAscending()
 {
     const violin = document.getElementById("Violin");
     ES.CommitChanges(violin);
-    DV.RefreshViolinDirection(UT.RowDescStart)
+    DV.RefreshViolinDirection(UT.ColDescStart)
 
-    let cellNotes,cellFingers,cellViolinPositions;
-    let cellNotesDesc,cellFingersDesc,cellViolinPositionsDesc;
-    let stringExport = "";
-    //Ascending
-    // let scale,octaves,
-    let string,fret,note,notePosition = 1,finger,violinPosition
-    let lastFinger = -1,currentViolinPosition;
+    let note
 
-    for (let r = UT.RowAscEnd ; r >= UT.RowAscEnd - 9; r-=3) 
+    const maxFret = DAL.GetMaxFret();
+    let row;
+
+    for (let r=0; r<=maxFret; r++) 
     {
-        cellNotes = violin.rows[r].cells;
-        cellFingers = violin.rows[r-1].cells;
-        cellViolinPositions = violin.rows[r-2].cells;
-        // console.log("r: " + r);
-
-        string = cellViolinPositions[0].innerHTML;
-        for (let c = 0; c < cellNotes.length; c++) 
+        row = violin.rows[r + UT.FretsRowStart];
+        for (var c = UT.ColAscStart; c < UT.ColAscStart + UT.NumStrings * UT.NumNoteDetails; c+=UT.NumNoteDetails) 
         {
-            // console.log("c: " + c);
-            note = cellNotes[c].innerHTML;
+            note = row.cells[c].innerHTML;
 
             if (!(UT.EmptyCell(note)))
             {
                 // console.log("note : " + note);
-                ES.FingerPositionCell.StringCol = r + UT.RowDirOffset;
-                ES.FingerPositionCell.Fret = c;
-                ES.FingerPositionCell.String = string;
+                ES.FingerPositionCell.StringCol = c + UT.ColDirOffset;
+                ES.FingerPositionCell.Fret = r;
+                ES.FingerPositionCell.String = UT.GetStringFromNoteCell(violin,row.cells[c]);
                 ES.FingerPositionCell.Note = note;
-                ES.FingerPositionCell.Finger = cellFingers[c].innerHTML;
-                ES.FingerPositionCell.Position = cellViolinPositions[c+1].innerHTML;
+                ES.FingerPositionCell.Finger = row.cells[c+1].innerHTML;
+                ES.FingerPositionCell.Position = row.cells[c+2].innerHTML;
                 ES.UpdateViolinCell(violin)
             }
         }
-    } 
+    }
 }
 
 function ExportDirection(rowStart,fingerBlock,direction)
