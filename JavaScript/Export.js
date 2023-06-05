@@ -17,7 +17,7 @@ export function Export()
     const scaleID = document.getElementById('Scales-dropdown').value;
     const currentScale = DAL.GetScale(scaleID);
 
-    let stringExport = "declare @S int = " + currentScale.Scale + ",@O int = " + currentScale.Octaves + "\r\n";
+    let stringExport = "use CelloScales\r\ngo\r\n\r\ndeclare @S int = " + currentScale.Scale + ",@O int = " + currentScale.Octaves + "\r\n";
     stringExport = stringExport + "delete from FingerBlocks where Scale = @S and Octaves = @O\r\n\r\n";
 
     var retObj = ExportDirection(UT.ColAscStart,fingerBlock,'Asc');

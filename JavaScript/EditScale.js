@@ -231,7 +231,7 @@ export function FingerPositionDelete()
     RefreshFingerPositionCell();
 }
 
-function RefreshFingerPositionCell()
+export function RefreshFingerPositionCell()
 {
     FingerPositionCell.StringCol = 0;
     FingerPositionCell.Fret = 0;

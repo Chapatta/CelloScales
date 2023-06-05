@@ -84,7 +84,7 @@ function GetStringOffset(CelloString)
     return stringOffset;
 }
 
-function RefreshCello()
+export function RefreshCello()
 {
     const Cello  = document.getElementById("Cello");
     const maxFret = DAL.GetMaxFret();

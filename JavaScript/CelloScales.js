@@ -37,6 +37,9 @@ function SetUpPage()
     button = document.getElementById('CopyAsc-button');
     button.onclick = OnCopyAsc_Click;
 
+    button = document.getElementById('Clear-button');
+    button.onclick = OnClear_Click;
+
     button = document.getElementById('Export-Tab');
     button.onclick = OnTab_Click;
 
@@ -126,6 +129,14 @@ function OnExport_Click()
 function OnCopyAsc_Click()
 {
     EXP.CopyAscending();
+}
+
+function OnClear_Click()
+{
+    const Cello  = document.getElementById("Cello");
+    ES.CommitChanges(Cello);
+    ES.RefreshFingerPositionCell();
+    DV.RefreshCello();
 }
 
 function OnTab_Click() 
