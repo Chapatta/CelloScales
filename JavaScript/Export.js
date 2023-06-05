@@ -60,6 +60,8 @@ export function CopyAscending()
             }
         }
     }
+
+    ES.RefreshFingerPositionCell();
 }
 
 function ExportDirection(colStart,fingerBlock,direction)
