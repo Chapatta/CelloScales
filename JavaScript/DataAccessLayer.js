@@ -18,7 +18,8 @@ export function GetScales(scaleType)
 
 export function GetMaxFret()
 {
-    return fingerPositionJSON.reduce((a,b)=>a.Fret>b.Fret?a:b).Fret;
+    return 18;
+    // return fingerPositionJSON.reduce((a,b)=>a.Fret>b.Fret?a:b).Fret;
 }
 
 export function GetKeys()

@@ -20,11 +20,11 @@ export function Export()
     let stringExport = "declare @S int = " + currentScale.Scale + ",@O int = " + currentScale.Octaves + "\r\n";
     stringExport = stringExport + "delete from FingerBlocks where Scale = @S and Octaves = @O\r\n\r\n";
 
-    var retObj = ExportDirection(UT.RowAscEnd,fingerBlock,'Asc');
+    var retObj = ExportDirection(UT.ColAscStart,fingerBlock,'Asc');
     stringExport = stringExport + retObj.string
 
     fingerBlock = retObj.fingerBlock + 1;
-    stringExport = stringExport + ExportDirection(UT.RowDescEnd,fingerBlock,'Desc') .string;
+    stringExport = stringExport + ExportDirection(UT.ColDescStart,fingerBlock,'Desc') .string;
 
     textArea.innerHTML = stringExport;
 }
@@ -62,7 +62,7 @@ export function CopyAscending()
     }
 }
 
-function ExportDirection(rowStart,fingerBlock,direction)
+function ExportDirection(colStart,fingerBlock,direction)
 {
     let cellNotes,cellFingers,cellViolinPositions,stringExport = "";
     const violin = document.getElementById("Violin");
@@ -72,27 +72,28 @@ function ExportDirection(rowStart,fingerBlock,direction)
     let string,fret,note,notePosition = 1,finger,violinPosition
     let lastFinger = -1,currentViolinPosition;
 
-    for (let r = rowStart ; r >= rowStart - 9; r-=3) 
-    {
-        cellNotes = violin.rows[r].cells;
-        cellFingers = violin.rows[r-1].cells;
-        cellViolinPositions = violin.rows[r-2].cells;
-        //console.log("r: " + r);
+    const maxFret = DAL.GetMaxFret();
+    let row;
 
-        string = cellViolinPositions[0].innerHTML;
-        for (let c = 0; c < cellNotes.length; c++) 
+    for (var c = colStart; c < colStart + UT.NumStrings * UT.NumNoteDetails; c+=UT.NumNoteDetails) 
+    {
+        for (let r=0; r<=maxFret; r++) 
         {
-            //console.log("c: " + c);
-            note = cellNotes[c].innerHTML;
+            row = violin.rows[r + UT.FretsRowStart];
+            if (r == 0)
+            {
+                string = UT.GetStringFromNoteCell(violin,row.cells[c]);
+            }
+
+            note = row.cells[c].innerHTML;
 
             if (!(UT.EmptyCell(note)))
             {
-                //console.log("note : " + note);
-                finger = cellFingers[c].innerHTML;
-                violinPosition = cellViolinPositions[c+1].innerHTML;
+                finger = row.cells[c+1].innerHTML;
+                violinPosition = row.cells[c+2].innerHTML;
 
-                fret = c;
-    
+                fret = r;
+
                 if (finger < lastFinger)
                 {
                     fingerBlock = fingerBlock + 1;
@@ -115,7 +116,7 @@ function ExportDirection(rowStart,fingerBlock,direction)
                 lastFinger = finger;
             }
         }
-    } 
+    }
     return {string: stringExport,fingerBlock: fingerBlock};
 }
 
